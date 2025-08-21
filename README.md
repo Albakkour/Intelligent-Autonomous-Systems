@@ -57,7 +57,7 @@ docker compose --help
 First, open a terminal window and clone this repository and its submodules.
 
 ```bash
-git clone --recurse-submodules git@git.cs.lth.se:robotlab/teaching/deliberation_for_ros.git
+git clone git@git.cs.lth.se:robotlab/teaching/edap20.git
 ```
 
 Change into the repository folder (`cd deliberation_for_ros`) and start the Docker container.
