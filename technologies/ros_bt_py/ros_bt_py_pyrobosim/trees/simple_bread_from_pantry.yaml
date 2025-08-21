@@ -1,0 +1,271 @@
+name: simple_bread_from_pantry.yaml
+path: ''
+root_name: RootSequence
+nodes:
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: RootSequence
+  child_names:
+  - SetupSequence
+  - MoveButterSequence
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: SetupSequence
+  child_names:
+  - NamesSequence
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: NamesSequence
+  child_names:
+  - PantryName
+  - BreadName
+  - TableName
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: PantryName
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"pantry"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: BreadName
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"bread"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: TableName
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"table"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: MoveButterSequence
+  child_names:
+  - MoveToPantry
+  - PickupBread
+  - MoveToTable
+  - PutDownBread
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: MoveToPantry
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/move_to_pose.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: MoveToCharger.TargetPose.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: PickupBread
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/pick_up.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: ObjectToPickUp.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: MoveToTable
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/move_to_pose.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: MoveToCharger.TargetPose.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: PutDownBread
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/put_down.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: ObjectToPickup.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+data_wirings:
+- source:
+    node_name: BreadName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: PickupBread
+    data_kind: inputs
+    data_key: ObjectToPickUp.in
+- source:
+    node_name: BreadName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: PutDownBread
+    data_kind: inputs
+    data_key: ObjectToPickup.in
+- source:
+    node_name: TableName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: MoveToTable
+    data_kind: inputs
+    data_key: MoveToCharger.TargetPose.in
+- source:
+    node_name: PantryName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: MoveToPantry
+    data_kind: inputs
+    data_key: MoveToCharger.TargetPose.in
+tick_frequency_hz: 10.0
+state: IDLE
+public_node_data:
+- node_name: MoveToPantry
+  data_kind: outputs
+  data_key: load_success
+- node_name: MoveToPantry
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: PickupBread
+  data_kind: outputs
+  data_key: load_success
+- node_name: PickupBread
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: MoveToTable
+  data_kind: outputs
+  data_key: load_success
+- node_name: MoveToTable
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: PutDownBread
+  data_kind: outputs
+  data_key: load_success
+- node_name: PutDownBread
+  data_kind: outputs
+  data_key: load_error_msg
