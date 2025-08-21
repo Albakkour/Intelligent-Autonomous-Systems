@@ -13,7 +13,7 @@
 
 services:
   base:
-    image: registry.git.cs.lth.se/robotlab/teaching/deliberation_for_ros
+    image: registry.git.cs.lth.se/robotlab/teaching/edap20
     build:
       context: .
       dockerfile: .docker/Dockerfile
