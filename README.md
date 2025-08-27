@@ -50,14 +50,17 @@ docker run hello-world
 docker compose --help
 ```
 
-* Here are additional instructions for [`macOS`](./macOS.md).
+### Additional installation instructions for MacOS and Windows 11
+
+* Here are additional instructions for [macOS](./macOS.md).
+* Here are additional instructions for [Windows 11](./windows.md).
 
 ### Installation
 
 First, open a terminal window and clone this repository and its submodules.
 
 ```bash
-git clone git@git.cs.lth.se:robotlab/teaching/edap20.git
+git clone --recurse-submodules git@git.cs.lth.se:robotlab/teaching/deliberation_for_ros.git
 ```
 
 Change into the repository folder (`cd deliberation_for_ros`) and start the Docker container.
