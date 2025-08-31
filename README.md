@@ -86,7 +86,7 @@ ros2 run delib_ws_worlds run
 docker compose exec base bash
 ```
 
-> Note: This command must be executed from the `deliberation_for_ros` repository folder.
+> Note: This command must be executed from the `edap20` repository folder.
 
 ## Developing in the Container
 
