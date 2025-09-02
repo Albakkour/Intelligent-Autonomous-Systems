@@ -26,6 +26,9 @@ start a terminal and run
 ```bash
 xhost +
 ```
+This will start XQuarz, and it will open up your unix window system for world-wide access :-)
+
+Make sure that XQuarz is running when starting your Docker container.
 
 When you want to run your container, you need to mount the host’s X11 socket directory (/tmp/.X11-unix). 
 Therefore, you need to use
