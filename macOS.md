@@ -51,4 +51,13 @@ export LIBGL_ALWAYS_SOFTWARE=1      # force Mesa llvmpipe
 ros2 run flexbe_webui webui_client
 ``` 
 
+## Trouble-Shooting
+* if you have started your docker container and you get a huge error message that contains something like "Unable to import Axes3D." or an error related to QT, then it can be mainly two reasons: 
+  * you have forgotten to start your XQuarz.
+  Open a shell and type 
+  ```bash
+  xhost +
+  ```
+* your IP numnber you used for starting your container is wrong. double-check that you are using the right IP address. If necessary, restart the container with the right IP.
 
+* If you want to start your turlesim and nothing happens, then either you started with the wrong IP or XQuarz is not running. 
