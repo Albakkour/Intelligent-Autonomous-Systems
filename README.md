@@ -37,6 +37,9 @@ Additionally, it can simulate failures and battery usage in the above actions.
 
 We highly recommend a host PC running Ubuntu 22.04 or 24.04, however, windows 11 with WSL2 and Mac OS is working also very well. 
 
+To run Ubuntu you should install virtualization software such as [VirtualBox](https://www.virtualbox.org/) or [VMWare](https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion).
+Then, set up an Ubuntu 22.04 or 24.04 virtual machine.
+
 You also need to have Docker and Docker Compose installed on your system.
 
 If you do not have these tools set up:
