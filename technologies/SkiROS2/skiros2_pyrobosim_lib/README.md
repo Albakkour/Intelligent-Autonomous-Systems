@@ -68,10 +68,6 @@ Below you'll find the structure of this repository.
 │   ├── problem1.pddl
 │   ├── ...
 │   ├── skiros.pddl         
-│   ├── solutions
-│   │   ├── problem1.pddl
-│   │   ...
-│   │   └── problem4.pddl
 │   └── test.pddl
 ├── scripts ----------------------- ### Helper scripts
 │   ├── update_battery_percentage.py    --> Script to update the world model
@@ -83,7 +79,6 @@ Below you'll find the structure of this repository.
     ├── problem_4_charge.py
     ├── pyrobosim_compound_skills.py    --> Skills wrapping pyrobosim primitives
     ├── pyrobosim_primitive_skills.py   --> Skills for interfacing with pyrobosim 
-    ├── solutions.py                    --> Don't look here until you're done:-)
     ├── task_planning.py                --> Extra skills to demonstrate task planning
     ├── utils                           --> Utility skills
     │   └── ...
