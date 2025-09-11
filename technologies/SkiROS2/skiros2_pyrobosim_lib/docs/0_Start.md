@@ -104,7 +104,7 @@ self.params["TargetLocation"].value
 
 ### Compound Skills
 
-SkiROS2 uses behavior trees to combine skills to more complex ones. You can find the following snippets in `src/skiros2_pyrobosim_lib/pyrobosim_compound_skills.py`.
+SkiROS2 uses behavior trees to combine skills to more complex ones. You can find the following snippets in `SkiROS/skiros2_pyrobosim_lib/pyrobosim_compound_skills.py`.
 
 Let's take a look at a simplified `Navigate` skill description:
 ```python
