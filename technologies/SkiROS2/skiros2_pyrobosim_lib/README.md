@@ -55,7 +55,6 @@ ros2 launch skiros2_pyrobosim_lib main.launch.py load_only_solutions:=True probl
 ## Repository Structure
 
 Below you'll find the structure of this repository.  
-You can also get it directly from [github.com/matthias-mayr/skiros2_pyrobosim_lib](https://github.com/matthias-mayr/skiros2_pyrobosim_lib)
 
 ```
 ├── README.md  
