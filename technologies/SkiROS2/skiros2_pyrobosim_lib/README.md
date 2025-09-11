@@ -44,13 +44,6 @@ This brings up the SkiROS2 interface as well as the pyrobosim world. As a first 
 
 ![pyrobosim world 1](docs/pyrobosim_world_1.png)
 
-### View Solutions
-
-We include the solutions to all problems in this repository. We assume that you have an interest to solve the problems yourself, but if you're stuck and want to see the robot move, you can load the solution of a given problem with:
-```sh
-ros2 launch skiros2_pyrobosim_lib main.launch.py load_only_solutions:=True problem_number:=1
-```
-
 
 ## Repository Structure
 
