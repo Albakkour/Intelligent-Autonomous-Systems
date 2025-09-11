@@ -51,10 +51,6 @@ We include the solutions to all problems in this repository. We assume that you 
 ros2 launch skiros2_pyrobosim_lib main.launch.py load_only_solutions:=True problem_number:=1
 ```
 
-This loads the set of solution skills that are in [skiros2_pyrobosim_lib/solutions.py](skiros2_pyrobosim_lib/solutions.py).
-
-
-
 
 ## Repository Structure
 
