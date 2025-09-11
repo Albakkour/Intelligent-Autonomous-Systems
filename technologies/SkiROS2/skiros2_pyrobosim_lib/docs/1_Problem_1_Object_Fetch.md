@@ -2,8 +2,8 @@
 
 In the previous markdown file [0_Start.md](0_Start.md) we learned about the primitive skills and compound skills.
 
-The primitive skills interface directly with `pyrobosim` are in [src/skiros2_pyrobosim_lib/primitive_skills.py](../skiros2_pyrobosim_lib/primitive_skills.py).  
-The compound skills that use and update the world model (WM) are in [src/skiros2_pyrobosim_lib/pyrobosim_compound_skills.py](../skiros2_pyrobosim_lib/pyrobosim_compound_skills.py).  
+The primitive skills interface directly with `pyrobosim` are in [SkiROS/skiros2_pyrobosim_lib/skiros2_pyrobosim_lib/primitive_skills.py](../skiros2_pyrobosim_lib/pyrobosim_primitive_skills.py).  
+The compound skills that use and update the world model (WM) are in [SkiROS/skiros2_pyrobosim_lib/skiros2_pyrobosim_lib/pyrobosim_compound_skills.py](../skiros2_pyrobosim_lib/pyrobosim_compound_skills.py).  
 
 Now we want to use them to solve problem 1:
 | Goal | Initial State | SkiROS2 Skills | Notes |
