@@ -48,12 +48,3 @@ This is known as **task planning**, and you can learn more in [this blog post](h
 In this repository, you will explore task planning in the ROS 2 ecosystem using [SkiROS2](https://github.com/RobotLabLTH/skiros2).
 
 [Start here to solve the example problems using SkiROS2](./SkiROS2/)
-
-## Formal Verification and Model Checking
-
-In addition to making it easier to program our robots, another benefit of using abstractions such as finite-state machines and behavior trees is the ability to analyze their robustness via *formal verification*.
-
-One such project that aims to solve this problem is the [CONVINCE toolbox](https://convince-project.github.io/overview/).
-In this workshop, you will explore [AS2FM](https://github.com/convince-project/AS2FM), which is part of the CONVINCE toolbox, to perform *statistical model checking* on behavior trees.
-
-[Start here to learn about statistical model checking with AS2FM](./convince/README.md)
