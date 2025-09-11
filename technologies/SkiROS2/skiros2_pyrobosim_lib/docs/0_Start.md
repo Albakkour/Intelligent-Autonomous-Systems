@@ -39,7 +39,7 @@ tl;dr: In SkiROS2 skills consist of:
 
 ### Primitive Skill
 
-Let's have a look at a primitive skill that interacts with `pyrobosim` to move the robot to a new location. These code snippets come from `SkiROS/skiros2_pyrobosim_lib/pyrobosim_primitive_skills.py`.
+Let's have a look at a primitive skill that interacts with `pyrobosim` to move the robot to a new location. These code snippets come from `SkiROS/skiros2_pyrobosim_lib/skiros2_pyrobosim_lib/pyrobosim_primitive_skills.py`.
 
 #### **Skill Description**
 This is the skill description for the navigate execution skill:
@@ -104,7 +104,7 @@ self.params["TargetLocation"].value
 
 ### Compound Skills
 
-SkiROS2 uses behavior trees to combine skills to more complex ones. You can find the following snippets in `SkiROS/skiros2_pyrobosim_lib/pyrobosim_compound_skills.py`.
+SkiROS2 uses behavior trees to combine skills to more complex ones. You can find the following snippets in `SkiROS/skiros2_pyrobosim_lib/skiros2_pyrobosim_lib/pyrobosim_compound_skills.py`.
 
 Let's take a look at a simplified `Navigate` skill description:
 ```python
