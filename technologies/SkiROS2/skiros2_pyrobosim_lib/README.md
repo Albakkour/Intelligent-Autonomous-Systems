@@ -99,4 +99,4 @@ Below you'll find the structure of this repository.
 
 ## Let's get Started
 
-Follow this link or just go in the docs folder [docs/0_Start.md](docs/0_Start.md) or view it online [on the Github repo](https://github.com/matthias-mayr/skiros2_pyrobosim_lib/tree/main/docs/0_Start.md) if you are reading this file locally.
+Follow this link or just go in the docs folder [docs/0_Start.md](docs/0_Start.md).
