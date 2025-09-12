@@ -120,6 +120,8 @@ class problem_3(SkillBase):
                 self.skill("BbUnsetParam", "", remap={"Parameter": "StartLocation"}),
                 self.skill("BbUnsetParam", "", remap={"Parameter": "ObjectStartLocation"}),
                 self.skill("BbUnsetParam", "", remap={"Parameter": "Container"}),
+                self.skill("BbUnsetParam", "", remap={"Parameter": "OpenableLocation"}),
+
             ),
             # FIXME 3.3: Now fetch the butter and close the fridge
             self.skill(SerialStar())(
