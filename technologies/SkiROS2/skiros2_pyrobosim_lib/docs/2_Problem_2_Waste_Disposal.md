@@ -73,8 +73,7 @@ Now we need to pick up the second waste item and bring it to the dumpster. You m
 
 ## 2.4 Closing the Dumpster
 
-As a final step we need to close the dumpster and we are done.
-
+As a final step we need to close the dumpster and we are done. Again, the skill is provided by the file [../skiros2_pyrobosim_lib/xtra_advanced_skills.py](../skiros2_pyrobosim_lib/xtra_advanced_skills.py). 
 # Next
 
 Continue with the [next problem, the table setting problem](3_Problem_3_Table_Setting.md).
