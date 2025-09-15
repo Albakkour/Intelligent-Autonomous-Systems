@@ -58,7 +58,7 @@ You can search the codebase for `FIXME 2` for all spots where something for prob
 We need to open the dumpster before we can dispose of the waste. This is important because we need an empty gripper to open the dumpster. It is of course possible to put down the object, open the door, and pick it up again, but for the sake of simplicity we will just open the dumpster first.
 As a side effect, this also makes sure that we have a clear path to the dumpster.
 
-Now as an actual task here, we only need to open the dumpster. You can use the "OpenLocation" skill to do that. Check out the parameters and make an appropriate remap.
+Now as an actual task here, we only need to open the dumpster. You can use the "OpenLocation" skill to do that. The skill is provided by the file [../skiros2_pyrobosim_lib/xtra_advanced_skills.py](../skiros2_pyrobosim_lib/xtra_advanced_skills.py). Check out the parameters and make an appropriate remap.
 
 ## 2.2 Waste Transport
 
