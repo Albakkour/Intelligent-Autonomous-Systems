@@ -50,10 +50,7 @@ For this workshop we have created a skill, `Task Planning from PDDL File`, which
 
 ## Problems
 
-This section we will assume that there are skills for [1 Problem 1 Object Fetch.md](1_Problem_1_Object_Fetch.md), [2 Problem 2 Waste Disposal.md](2_Problem_2_Waste_Disposal.md), [3 Problem 3 Table Setting.md](3_Problem_3_Table_Setting.md) and [4 Problem 4 Table Waste Charge](4_Problem_4_Table_Waste_Charge.md). If you have not, you can still solve these problems but you might be interested in passing `load_only_solutions:=True` and start up SkiROS2 like this:
-```sh
-ros2 launch skiros2_pyrobosim_lib main.launch.py load_only_solutions:=True problem_number:=1
-```
+This section we will assume that there are skills for [1 Problem 1 Object Fetch.md](1_Problem_1_Object_Fetch.md), [2 Problem 2 Waste Disposal.md](2_Problem_2_Waste_Disposal.md), [3 Problem 3 Table Setting.md](3_Problem_3_Table_Setting.md) and [4 Problem 4 Table Waste Charge](4_Problem_4_Table_Waste_Charge.md). 
 
 ### Problem 1
 
