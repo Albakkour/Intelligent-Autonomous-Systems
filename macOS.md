@@ -44,7 +44,9 @@ docker compose exec base bash
 ```
 as explained on the main page.
 
-* Special settings are needed when you are starting the FlexBE UI with the finite state machines. There you need to run in your docker shell:
+##Something to remember for later
+
+Special settings are needed when you are starting the FlexBE UI with the finite state machines. There you need to run in your docker shell:
 ```bash
 export QT_QPA_PLATFORM=xcb          # normal X11 backend
 export QT_QUICK_BACKEND=software    # Qt-Quick → raster, no OpenGL shaders
