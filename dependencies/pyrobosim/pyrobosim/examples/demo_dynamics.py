@@ -4,15 +4,14 @@
 Test script showing how to command robot velocities and simulate dynamics.
 """
 import os
-import numpy as np
 import time
 from threading import Thread
 
+import numpy as np
 from pyrobosim.core import Robot, World
 from pyrobosim.gui import start_gui
 from pyrobosim.utils.general import get_data_folder
 from pyrobosim.utils.pose import Pose
-
 
 data_folder = get_data_folder()
 

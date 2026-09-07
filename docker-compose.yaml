@@ -13,6 +13,7 @@
 
 services:
   base:
+    platform: linux/amd64
     image: registry.git.cs.lth.se/robotlab/teaching/edap20
     build:
       context: .
@@ -35,7 +36,7 @@ services:
       # If you disable ROS_LOCALHOST_ONLY above, ensure you use a unique domain ID on your network
       - ROS_DOMAIN_ID=0
       # Allows graphical programs in the container
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=${DOCKER_DISPLAY}
       - QT_X11_NO_MITSHM=1
       # Enables FlexBE web UI to work as root inside the container
       - QTWEBENGINE_DISABLE_SANDBOX=1
