@@ -1,0 +1,706 @@
+# problem4_guarded.yaml
+#
+# Problem4.RootSequence                 MemorySequence: constants + one-shot preparation run ONCE
+# |- <13 constants>
+# |- PrepareChargerAccess               check_if_reachable(charger via hall_dining_closet), empty-handed, once
+# `- GuardedMission                     Sequence (NO memory): guard is re-ticked every tick = continuous monitoring
+#    |- BatteryGuard                    MemoryFallback: once charging starts it is NOT pre-empted at the threshold
+#    |  |- CheckBattery                 check_battery.yaml   (SUCCESS if battery >= threshold)
+#    |  `- ChargeBattery                charge_battery.yaml  (go to charger, charge to 95, resume last goal)
+#    `- MainTask                        MemorySequence: keeps progress while the guard interrupts
+#       |- GetWasteTask                 MemorySequence
+#       |  |- GetWaste                  get_waste.yaml  desk / waste0 / dumpster
+#       |  `- GetWaste1                 get_waste.yaml  bin  / waste1 / dumpster
+#       `- GetBreadAndButter            MemorySequence
+#          |- GetBread                  get_object.yaml pantry / bread  / table
+#          `- GetButter                 get_object.yaml fridge / butter / table
+name: problem4_guarded.yaml
+path: ''
+root_name: Problem4.RootSequence
+nodes:
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: Problem4.RootSequence
+  child_names:
+  - WasteSource
+  - WasteName
+  - WasteName1
+  - WasteSource1
+  - DumpsterName
+  - BreadSource
+  - BreadName
+  - BreadDestination
+  - ButterSource
+  - ButterName
+  - ButterDestination
+  - ChargerLocation
+  - ChargerHallway
+  - PrepareChargerAccess
+  - GuardedMission
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: WasteSource
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"desk"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: WasteName
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"waste0"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: WasteName1
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"waste1"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: WasteSource1
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"bin"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: DumpsterName
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"dumpster"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: BreadSource
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"pantry"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: BreadName
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"bread"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: BreadDestination
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"table"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: ButterSource
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"fridge"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: ButterName
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"butter"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: ButterDestination
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"table"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: ChargerLocation
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"charger"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.constant
+  node_class: Constant
+  version: 0.1.0
+  max_children: 0
+  name: ChargerHallway
+  child_names: []
+  options:
+  - key: constant_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: constant_value
+    serialized_value: '"hall_dining_closet"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs: []
+  outputs:
+  - key: constant
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: PrepareChargerAccess
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/check_if_reachable.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: TargetLocation.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: Hallway.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.sequence
+  node_class: Sequence
+  version: 0.1.0
+  max_children: -1
+  name: GuardedMission
+  child_names:
+  - BatteryGuard
+  - MainTask
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.fallback
+  node_class: MemoryFallback
+  version: 0.1.0
+  max_children: -1
+  name: BatteryGuard
+  child_names:
+  - CheckBattery
+  - ChargeBattery
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: CheckBattery
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/check_battery.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs: []
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: ChargeBattery
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/charge_battery.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs: []
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: MainTask
+  child_names:
+  - GetWasteTask
+  - GetBreadAndButter
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: GetWasteTask
+  child_names:
+  - GetWaste
+  - GetWaste1
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: GetWaste
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/get_waste.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: SourceLocation.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: WasteName.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: DumpsterName.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: GetWaste1
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/get_waste.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: SourceLocation.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: WasteName.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: DumpsterName.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: GetBreadAndButter
+  child_names:
+  - GetBread
+  - GetButter
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: GetBread
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/get_object.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: SourceLocation.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: ObjectName.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: Destination.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: GetButter
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/get_object.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: SourceLocation.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: ObjectName.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: Destination.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+data_wirings:
+- source:
+    node_name: ChargerLocation
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: PrepareChargerAccess
+    data_kind: inputs
+    data_key: TargetLocation.in
+- source:
+    node_name: ChargerHallway
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: PrepareChargerAccess
+    data_kind: inputs
+    data_key: Hallway.in
+- source:
+    node_name: WasteSource
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetWaste
+    data_kind: inputs
+    data_key: SourceLocation.in
+- source:
+    node_name: WasteName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetWaste
+    data_kind: inputs
+    data_key: WasteName.in
+- source:
+    node_name: DumpsterName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetWaste
+    data_kind: inputs
+    data_key: DumpsterName.in
+- source:
+    node_name: WasteSource1
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetWaste1
+    data_kind: inputs
+    data_key: SourceLocation.in
+- source:
+    node_name: WasteName1
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetWaste1
+    data_kind: inputs
+    data_key: WasteName.in
+- source:
+    node_name: DumpsterName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetWaste1
+    data_kind: inputs
+    data_key: DumpsterName.in
+- source:
+    node_name: BreadSource
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetBread
+    data_kind: inputs
+    data_key: SourceLocation.in
+- source:
+    node_name: BreadName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetBread
+    data_kind: inputs
+    data_key: ObjectName.in
+- source:
+    node_name: BreadDestination
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetBread
+    data_kind: inputs
+    data_key: Destination.in
+- source:
+    node_name: ButterSource
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetButter
+    data_kind: inputs
+    data_key: SourceLocation.in
+- source:
+    node_name: ButterName
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetButter
+    data_kind: inputs
+    data_key: ObjectName.in
+- source:
+    node_name: ButterDestination
+    data_kind: outputs
+    data_key: constant
+  target:
+    node_name: GetButter
+    data_kind: inputs
+    data_key: Destination.in
+tick_frequency_hz: 10.0
+state: IDLE
+public_node_data:
+- node_name: PrepareChargerAccess
+  data_kind: outputs
+  data_key: load_success
+- node_name: PrepareChargerAccess
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: CheckBattery
+  data_kind: outputs
+  data_key: load_success
+- node_name: CheckBattery
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: ChargeBattery
+  data_kind: outputs
+  data_key: load_success
+- node_name: ChargeBattery
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: GetWaste
+  data_kind: outputs
+  data_key: load_success
+- node_name: GetWaste
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: GetWaste1
+  data_kind: outputs
+  data_key: load_success
+- node_name: GetWaste1
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: GetBread
+  data_kind: outputs
+  data_key: load_success
+- node_name: GetBread
+  data_kind: outputs
+  data_key: load_error_msg
+- node_name: GetButter
+  data_kind: outputs
+  data_key: load_success
+- node_name: GetButter
+  data_kind: outputs
+  data_key: load_error_msg

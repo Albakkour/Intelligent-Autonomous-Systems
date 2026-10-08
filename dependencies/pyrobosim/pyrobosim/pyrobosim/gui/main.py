@@ -51,13 +51,19 @@ class PyRoboSimMainWindow(QtWidgets.QMainWindow):  # type: ignore [misc]
     """Signal for updating UI button state."""
 
     def __init__(
-        self, world: World, show: bool = True, *args: Any, **kwargs: Any
+        self,
+        world: World,
+        show: bool = True,
+        realtime_factor: float = 10.0,
+        *args: Any,
+        **kwargs: Any,
     ) -> None:
         """
         Creates an instance of the pyrobosim application main window.
 
         :param world: World object to attach.
         :param show: If true (default), shows the GUI. Otherwise runs headless for testing.
+        :param realtime_factor: Real-time multiplier for animation (10.0 is 10x faster than real time).
         """
         from .world_canvas import WorldCanvas
 
@@ -67,7 +73,7 @@ class PyRoboSimMainWindow(QtWidgets.QMainWindow):  # type: ignore [misc]
         self.setWindowTitle("pyrobosim")
         self.set_window_dims()
 
-        self.canvas = WorldCanvas(self, world, show)
+        self.canvas = WorldCanvas(self, world, show, realtime_factor=realtime_factor)
         self.set_world(world)
 
         self.create_layout()

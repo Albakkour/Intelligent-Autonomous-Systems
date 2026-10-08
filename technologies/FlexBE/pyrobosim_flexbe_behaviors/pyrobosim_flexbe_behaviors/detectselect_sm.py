@@ -42,7 +42,7 @@ Simple test of PlanPath action for pyrobosim with detection and selection
 actions.
 
 Created on Wed Aug 14 2024
-@author: David Conner
+@author: David Conner & Mohamed Albakkour
 """
 
 
@@ -53,7 +53,6 @@ from flexbe_core import Logger
 from flexbe_core import OperatableStateMachine
 from flexbe_core import PriorityContainer
 from flexbe_core import initialize_flexbe_core
-from flexbe_states.log_key_state import LogKeyState
 from flexbe_states.log_state import LogState
 from flexbe_states.selection_state import SelectionState
 from flexbe_states.user_data_state import UserdataState
@@ -102,7 +101,7 @@ class DetectSelectSM(Behavior):
     def create(self):
         """Create state machine."""
         # Root state machine
-        # x:1283 y:68, x:673 y:457
+        # x:1283 y:68, x:631 y:490
         _state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
         _state_machine.userdata.goal = self.move_location
 
@@ -118,21 +117,21 @@ class DetectSelectSM(Behavior):
                                        PlanPathState(action_topic='robot/plan_path',
                                                      timeout=10.0),
                                        transitions={'done': 'FollowFirstPath'  # 354 58 -1 -1 -1 -1
-                                                    , 'failed': 'LogFailedMsg'  # 204 408 262 112 325 484
+                                                    , 'failed': 'PlanFirstMove'  # 192 148 -1 -1 -1 -1
                                                     },
-                                       autonomy={'done': Autonomy.High, 'failed': Autonomy.Off},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off},
                                        remapping={'goal': 'goal', 'msg': 'msg', 'path': 'path'})
 
-            # x:912 y:30
+            # x:916 y:62
             OperatableStateMachine.add('DetectObjects',
                                        DetectObjectsState(filter=None,
                                                           action_topic='robot/detect_objects',
                                                           timeout=2.0),
-                                       transitions={'done': 'SelectObject'  # 971 157 956 83 910 228
-                                                    , 'failed': 'LogFailedMsg'  # 638 262 -1 -1 -1 -1
-                                                    , 'nothing': 'LogFailedMsg'  # 638 262 -1 -1 -1 -1
+                                       transitions={'done': 'SelectObject'  # 971 169 960 115 910 228
+                                                    , 'failed': 'DetectObjects'  # 1009 36 -1 -1 -1 -1
+                                                    , 'nothing': 'DetectObjects'  # 1009 36 -1 -1 -1 -1
                                                     },
-                                       autonomy={'done': Autonomy.High,
+                                       autonomy={'done': Autonomy.Off,
                                                  'failed': Autonomy.Off,
                                                  'nothing': Autonomy.Off},
                                        remapping={'goal': 'goal', 'msg': 'msg', 'items': 'items'})
@@ -141,10 +140,10 @@ class DetectSelectSM(Behavior):
             OperatableStateMachine.add('FollowFirstPath',
                                        FollowPathState(action_topic='robot/follow_path',
                                                        server_timeout=2.0),
-                                       transitions={'done': 'DetectObjects'  # 763 54 -1 -1 -1 -1
-                                                    , 'failed': 'LogFailedMsg'  # 363 361 447 100 358 444
+                                       transitions={'done': 'DetectObjects'  # 766 54 -1 -1 -1 -1
+                                                    , 'failed': 'PlanFirstMove'  # 340 101 -1 -1 -1 -1
                                                     },
-                                       autonomy={'done': Autonomy.High, 'failed': Autonomy.Off},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off},
                                        remapping={'path': 'path', 'msg': 'msg'})
 
             # x:794 y:615
@@ -152,27 +151,10 @@ class DetectSelectSM(Behavior):
                                        FollowPathState(action_topic='robot/follow_path',
                                                        server_timeout=2.0),
                                        transitions={'done': 'PlaceObject'  # 1080 654 -1 -1 1131 603
-                                                    , 'failed': 'LogFailedMsg'  # 580 580 -1 -1 -1 -1
+                                                    , 'failed': 'PlanNextMove'  # 960 588 -1 -1 -1 -1
                                                     },
-                                       autonomy={'done': Autonomy.High, 'failed': Autonomy.Off},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off},
                                        remapping={'path': 'path', 'msg': 'msg'})
-
-            # x:326 y:445
-            OperatableStateMachine.add('LogFailedMsg',
-                                       LogKeyState(text="Failed: {}",
-                                                   severity=2),
-                                       transitions={'done': 'failed'  # 537 469 -1 -1 -1 -1
-                                                    },
-                                       autonomy={'done': Autonomy.Full},
-                                       remapping={'data': 'msg'})
-
-            # x:615 y:321
-            OperatableStateMachine.add('LogFailure',
-                                       LogState(text="Failed to select object",
-                                                severity=2),
-                                       transitions={'done': 'failed'  # 542 416 -1 -1 -1 -1
-                                                    },
-                                       autonomy={'done': Autonomy.High})
 
             # x:1217 y:401
             OperatableStateMachine.add('LogFinished',
@@ -180,7 +162,7 @@ class DetectSelectSM(Behavior):
                                                 severity=2),
                                        transitions={'done': 'finished'  # 1261 238 -1 -1 1288 99
                                                     },
-                                       autonomy={'done': Autonomy.Full})
+                                       autonomy={'done': Autonomy.Off})
 
             # x:940 y:376
             OperatableStateMachine.add('NextLocation',
@@ -196,9 +178,9 @@ class DetectSelectSM(Behavior):
                                                        action_topic='/execute_action',
                                                        timeout=2.0),
                                        transitions={'done': 'NextLocation'  # 1075 390 -1 -1 -1 -1
-                                                    , 'failed': 'LogFailedMsg'  # 709 409 -1 -1 -1 -1
+                                                    , 'failed': 'SelectObject'  # 926 310 -1 -1 -1 -1
                                                     },
-                                       autonomy={'done': Autonomy.High, 'failed': Autonomy.Off},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off},
                                        remapping={'object': 'object', 'msg': 'msg'})
 
             # x:1079 y:550
@@ -207,7 +189,7 @@ class DetectSelectSM(Behavior):
                                                         action_topic='/execute_action',
                                                         timeout=2.0),
                                        transitions={'done': 'LogFinished'  # 1265 518 -1 -1 -1 -1
-                                                    , 'failed': 'LogFailedMsg'  # 745 539 -1 -1 -1 -1
+                                                    , 'failed': 'PlaceObject'  # 1186 637 -1 -1 -1 -1
                                                     },
                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off},
                                        remapping={'msg': 'msg'})
@@ -217,9 +199,9 @@ class DetectSelectSM(Behavior):
                                        PlanPathState(action_topic='robot/plan_path',
                                                      timeout=2.0),
                                        transitions={'done': 'FollowNextPath'  # 844 575 870 540 831 614
-                                                    , 'failed': 'LogFailedMsg'  # 602 490 -1 -1 -1 -1
+                                                    , 'failed': 'PlanNextMove'  # 781 490 -1 -1 -1 -1
                                                     },
-                                       autonomy={'done': Autonomy.High, 'failed': Autonomy.Off},
+                                       autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off},
                                        remapping={'goal': 'goal', 'msg': 'msg', 'path': 'path'})
 
             # x:869 y:229
@@ -228,9 +210,9 @@ class DetectSelectSM(Behavior):
                                                       timeout=1.0,
                                                       action_topic='flexbe/behavior_input'),
                                        transitions={'received': 'PickObject'  # 1041 257 -1 -1 1071 309
-                                                    , 'aborted': 'LogFailure'  # 772 301 -1 -1 -1 -1
-                                                    , 'no_connection': 'LogFailure'  # 772 301 -1 -1 -1 -1
-                                                    , 'data_error': 'LogFailure'  # 772 301 -1 -1 -1 -1
+                                                    , 'aborted': 'DetectObjects'  # 772 155 -1 -1 -1 -1
+                                                    , 'no_connection': 'DetectObjects'  # 772 155 -1 -1 -1 -1
+                                                    , 'data_error': 'DetectObjects'  # 772 155 -1 -1 -1 -1
                                                     },
                                        autonomy={'received': Autonomy.High,
                                                  'aborted': Autonomy.Low,

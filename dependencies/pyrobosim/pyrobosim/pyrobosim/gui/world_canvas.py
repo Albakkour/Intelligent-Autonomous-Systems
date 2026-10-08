@@ -77,7 +77,7 @@ class WorldCanvas(FigureCanvasQTAgg):  # type: ignore [misc]
         show: bool = True,
         dpi: int = 100,
         animation_dt: float = 0.1,
-        realtime_factor: float = 1.0,
+        realtime_factor: float = 10.0,
     ) -> None:
         """
         Creates an instance of a pyrobosim figure canvas.

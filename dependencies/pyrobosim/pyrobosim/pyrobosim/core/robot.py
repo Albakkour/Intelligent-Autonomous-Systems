@@ -1,7 +1,8 @@
 """Defines a robot which operates in a world."""
 
 import time
-from typing import Any, Sequence
+from typing import Any
+from collections.abc import Sequence
 
 import numpy as np
 from matplotlib.text import Text
@@ -309,14 +310,14 @@ class Robot(Entity):
     def follow_path(
         self,
         path: Path,
-        realtime_factor: float = 1.0,
+        realtime_factor: float = 10.0,
     ) -> ExecutionResult:
         """
         Follows a specified path using the attached path executor.
 
         :param path: The path to follow.
         :param realtime_factor: A real-time multiplier on execution speed,
-            defaults to 1.0.
+            defaults to 10.0.
         :return: An object describing the execution result.
         """
         self.last_nav_result = ExecutionResult()
@@ -383,7 +384,7 @@ class Robot(Entity):
         start: Pose | None = None,
         goal: Pose | str | None = None,
         path: Path | None = None,
-        realtime_factor: float = 1.0,
+        realtime_factor: float = 10.0,
     ) -> ExecutionResult:
         """
         Executes a navigation task, which combines path planning and following.
@@ -394,7 +395,7 @@ class Robot(Entity):
             If not specified, returns None.
         :param path: The path to follow.
         :param realtime_factor: A real-time multiplier on execution speed,
-            defaults to 1.0.
+            defaults to 10.0.
         :return: An object describing the execution result.
         """
         if self.battery_level <= 0.0:
@@ -936,7 +937,7 @@ class Robot(Entity):
                 result = self.navigate(
                     goal=action.target_location,
                     path=path,
-                    realtime_factor=1.0,
+                    realtime_factor=10.0,
                 )
 
         elif action.type == "pick":

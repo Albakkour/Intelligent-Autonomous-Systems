@@ -1,0 +1,508 @@
+name: get_object.yaml
+path: ''
+root_name: GetObject.RootSequence
+
+nodes:
+
+# ============================================================
+# ROOT
+# ============================================================
+
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: GetObject.RootSequence
+  child_names:
+  - SourceLocation
+  - ObjectName
+  - Destination
+  - GetObjectSequence
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# PUBLIC INPUTS
+# ============================================================
+
+- module: ros_bt_py.nodes.io
+  node_class: IOInputOption
+  version: 0.1.0
+  max_children: 0
+  name: SourceLocation
+  child_names: []
+  options:
+  - key: io_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: default
+    serialized_value: '"pantry"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs:
+  - key: in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: out
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+- module: ros_bt_py.nodes.io
+  node_class: IOInputOption
+  version: 0.1.0
+  max_children: 0
+  name: ObjectName
+  child_names: []
+  options:
+  - key: io_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: default
+    serialized_value: '"bread"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs:
+  - key: in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: out
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+- module: ros_bt_py.nodes.io
+  node_class: IOInputOption
+  version: 0.1.0
+  max_children: 0
+  name: Destination
+  child_names: []
+  options:
+  - key: io_type
+    serialized_value: '{"py/type": "builtins.str"}'
+    serialized_type: '{"py/type": "builtins.type"}'
+  - key: default
+    serialized_value: '"table"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  inputs:
+  - key: in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: out
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+# ============================================================
+# MAIN OBJECT SEQUENCE
+# ============================================================
+
+- module: ros_bt_py.nodes.sequence
+  node_class: MemorySequence
+  version: 0.1.0
+  max_children: -1
+  name: GetObjectSequence
+  child_names:
+  - RepeatMoveToSource
+  - RepeatOpenSource
+  - RepeatPickupObject
+  - RepeatMoveToDestination
+  - RepeatPutDownObject
+  - RepeatMoveToSource_2
+  - RepeatCloseSource
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# REPEAT MOVETOSOURCE
+# ============================================================
+
+- module: ros_bt_py.nodes.decorators
+  node_class: RepeatIfFail
+  version: 0.1.0
+  max_children: 1
+  name: RepeatMoveToSource
+  child_names:
+  - MoveToSource
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# MOVE TO SOURCE
+# ============================================================
+
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: MoveToSource
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/move_to_pose.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: MoveToCharger.TargetPose.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+# ============================================================
+# REPEAT OPENSOURCE
+# ============================================================
+
+- module: ros_bt_py.nodes.decorators
+  node_class: RepeatIfFail
+  version: 0.1.0
+  max_children: 1
+  name: RepeatOpenSource
+  child_names:
+  - OpenSource
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# OPEN SOURCE
+# ============================================================
+
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: OpenSource
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/open_door.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs: []
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+# ============================================================
+# REPEAT PICKUPOBJECT
+# ============================================================
+
+- module: ros_bt_py.nodes.decorators
+  node_class: RepeatIfFail
+  version: 0.1.0
+  max_children: 1
+  name: RepeatPickupObject
+  child_names:
+  - PickupObject
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# PICK UP OBJECT
+# ============================================================
+
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: PickupObject
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/pick_up.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: ObjectToPickUp.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+# ============================================================
+# REPEAT MOVETODESTINATION
+# ============================================================
+
+- module: ros_bt_py.nodes.decorators
+  node_class: RepeatIfFail
+  version: 0.1.0
+  max_children: 1
+  name: RepeatMoveToDestination
+  child_names:
+  - MoveToDestination
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# MOVE TO DESTINATION
+# ============================================================
+
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: MoveToDestination
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/move_to_pose.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: MoveToCharger.TargetPose.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+# ============================================================
+# REPEAT PUTDOWNOBJECT
+# ============================================================
+
+- module: ros_bt_py.nodes.decorators
+  node_class: RepeatIfFail
+  version: 0.1.0
+  max_children: 1
+  name: RepeatPutDownObject
+  child_names:
+  - PutDownObject
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# PUT DOWN OBJECT
+# ============================================================
+
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: PutDownObject
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/put_down.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: ObjectToPickup.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+# ============================================================
+# REPEAT MOVETOSOURCE_2
+# ============================================================
+
+- module: ros_bt_py.nodes.decorators
+  node_class: RepeatIfFail
+  version: 0.1.0
+  max_children: 1
+  name: RepeatMoveToSource_2
+  child_names:
+  - MoveToSource_2
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# RETURN TO SOURCE
+# ============================================================
+
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: MoveToSource_2
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/move_to_pose.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs:
+  - key: MoveToCharger.TargetPose.in
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+# ============================================================
+# REPEAT CLOSESOURCE
+# ============================================================
+
+- module: ros_bt_py.nodes.decorators
+  node_class: RepeatIfFail
+  version: 0.1.0
+  max_children: 1
+  name: RepeatCloseSource
+  child_names:
+  - CloseSource
+  options: []
+  inputs: []
+  outputs: []
+  state: SHUTDOWN
+
+# ============================================================
+# CLOSE SOURCE
+# ============================================================
+
+- module: ros_bt_py.ros_nodes.subtree
+  node_class: Subtree
+  version: 0.2.0
+  max_children: 0
+  name: CloseSource
+  child_names: []
+  options:
+  - key: subtree_path
+    serialized_value: '"package://ros_bt_py_pyrobosim/trees/close_door.yaml"'
+    serialized_type: '{"py/type": "builtins.str"}'
+  - key: use_io_nodes
+    serialized_value: 'true'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  inputs: []
+  outputs:
+  - key: load_success
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.bool"}'
+  - key: load_error_msg
+    serialized_value: 'null'
+    serialized_type: '{"py/type": "builtins.str"}'
+  state: SHUTDOWN
+
+# ============================================================
+# DATA WIRINGS
+# ============================================================
+
+data_wirings:
+
+- source:
+    node_name: SourceLocation
+    data_kind: outputs
+    data_key: out
+  target:
+    node_name: MoveToSource
+    data_kind: inputs
+    data_key: MoveToCharger.TargetPose.in
+
+- source:
+    node_name: SourceLocation
+    data_kind: outputs
+    data_key: out
+  target:
+    node_name: MoveToSource_2
+    data_kind: inputs
+    data_key: MoveToCharger.TargetPose.in
+
+- source:
+    node_name: ObjectName
+    data_kind: outputs
+    data_key: out
+  target:
+    node_name: PickupObject
+    data_kind: inputs
+    data_key: ObjectToPickUp.in
+
+- source:
+    node_name: Destination
+    data_kind: outputs
+    data_key: out
+  target:
+    node_name: MoveToDestination
+    data_kind: inputs
+    data_key: MoveToCharger.TargetPose.in
+
+- source:
+    node_name: ObjectName
+    data_kind: outputs
+    data_key: out
+  target:
+    node_name: PutDownObject
+    data_kind: inputs
+    data_key: ObjectToPickup.in
+
+tick_frequency_hz: 10.0
+
+state: EDITABLE
+
+# ============================================================
+# PUBLIC INPUTS
+# ============================================================
+
+public_node_data:
+
+- node_name: SourceLocation
+  data_kind: inputs
+  data_key: in
+
+- node_name: ObjectName
+  data_kind: inputs
+  data_key: in
+
+- node_name: Destination
+  data_kind: inputs
+  data_key: in

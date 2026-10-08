@@ -1,0 +1,489 @@
+name: ''
+path: ''
+root_name: GetWaste.RootSequence
+
+nodes:
+
+  - module: ros_bt_py.nodes.sequence
+    node_class: MemorySequence
+    version: 0.1.0
+    max_children: -1
+    name: GetWaste.RootSequence
+    child_names:
+      - SourceLocation
+      - WasteName
+      - DumpsterName
+      - TrashHallway
+      - GetWasteSequence
+    options: []
+    inputs: []
+    outputs: []
+    state: SHUTDOWN
+
+  - module: ros_bt_py.nodes.io
+    node_class: IOInputOption
+    version: 0.1.0
+    max_children: 0
+    name: SourceLocation
+    child_names: []
+    options:
+      - key: io_type
+        serialized_value: '{"py/type": "builtins.str"}'
+        serialized_type: '{"py/type": "builtins.type"}'
+      - key: default
+        serialized_value: '"desk"'
+        serialized_type: '{"py/type": "builtins.str"}'
+    inputs:
+      - key: in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: out
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+  - module: ros_bt_py.nodes.io
+    node_class: IOInputOption
+    version: 0.1.0
+    max_children: 0
+    name: WasteName
+    child_names: []
+    options:
+      - key: io_type
+        serialized_value: '{"py/type": "builtins.str"}'
+        serialized_type: '{"py/type": "builtins.type"}'
+      - key: default
+        serialized_value: '"waste0"'
+        serialized_type: '{"py/type": "builtins.str"}'
+    inputs:
+      - key: in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: out
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+  - module: ros_bt_py.nodes.io
+    node_class: IOInputOption
+    version: 0.1.0
+    max_children: 0
+    name: DumpsterName
+    child_names: []
+    options:
+      - key: io_type
+        serialized_value: '{"py/type": "builtins.str"}'
+        serialized_type: '{"py/type": "builtins.type"}'
+      - key: default
+        serialized_value: '"dumpster"'
+        serialized_type: '{"py/type": "builtins.str"}'
+    inputs:
+      - key: in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: out
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+  - module: ros_bt_py.nodes.constant
+    node_class: Constant
+    version: 0.1.0
+    max_children: 0
+    name: TrashHallway
+    child_names: []
+    options:
+      - key: constant_type
+        serialized_value: '{"py/type": "builtins.str"}'
+        serialized_type: '{"py/type": "builtins.type"}'
+      - key: constant_value
+        serialized_value: '"hall_dining_trash"'
+        serialized_type: '{"py/type": "builtins.str"}'
+    inputs: []
+    outputs:
+      - key: constant
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # MAIN SEQUENCE
+  #
+  # The robot must be EMPTY-HANDED before opening the hallway
+  # door or dumpster.
+  #
+  # 1. Check access to dumpster.
+  #    If blocked, check_if_reachable moves to the hallway door
+  #    and opens it.
+  # 2. Move to dumpster and open it while empty-handed.
+  # 3. Return to source and pick up waste.
+  # 4. Return to already-prepared dumpster.
+  # 5. Place waste and close dumpster.
+  # ============================================================
+
+  - module: ros_bt_py.nodes.sequence
+    node_class: MemorySequence
+    version: 0.1.0
+    max_children: -1
+    name: GetWasteSequence
+    child_names:
+      - check_if_reachable
+      - MoveToDumpsterBeforePickup
+      - OpenDumpster
+      - MoveToSource
+      - PickupWaste
+      - MoveToDumpster
+      - PutDownWaste
+      - CloseDumpster
+    options: []
+    inputs: []
+    outputs: []
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # CHECK ACCESS TO DUMPSTER
+  # ============================================================
+
+  - module: ros_bt_py.ros_nodes.subtree
+    node_class: Subtree
+    version: 0.2.0
+    max_children: 0
+    name: check_if_reachable
+    child_names: []
+    options:
+      - key: subtree_path
+        serialized_value: '"package://ros_bt_py_pyrobosim/trees/check_if_reachable.yaml"'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: use_io_nodes
+        serialized_value: 'true'
+        serialized_type: '{"py/type": "builtins.bool"}'
+    inputs:
+      - key: TargetLocation.in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: Hallway.in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: load_success
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.bool"}'
+      - key: load_error_msg
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # MOVE TO DUMPSTER BEFORE PICKUP
+  # ============================================================
+
+  - module: ros_bt_py.ros_nodes.subtree
+    node_class: Subtree
+    version: 0.2.0
+    max_children: 0
+    name: MoveToDumpsterBeforePickup
+    child_names: []
+    options:
+      - key: subtree_path
+        serialized_value: '"package://ros_bt_py_pyrobosim/trees/move_to_pose.yaml"'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: use_io_nodes
+        serialized_value: 'true'
+        serialized_type: '{"py/type": "builtins.bool"}'
+    inputs:
+      - key: MoveToCharger.TargetPose.in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: load_success
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.bool"}'
+      - key: load_error_msg
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # OPEN DUMPSTER WHILE EMPTY-HANDED
+  #
+  # This follows the same existing open_door.yaml convention
+  # already used by the project's DumpsterTest subtree.
+  # ============================================================
+
+  - module: ros_bt_py.ros_nodes.subtree
+    node_class: Subtree
+    version: 0.2.0
+    max_children: 0
+    name: OpenDumpster
+    child_names: []
+    options:
+      - key: subtree_path
+        serialized_value: '"package://ros_bt_py_pyrobosim/trees/open_door.yaml"'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: use_io_nodes
+        serialized_value: 'true'
+        serialized_type: '{"py/type": "builtins.bool"}'
+    inputs: []
+    outputs:
+      - key: load_success
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.bool"}'
+      - key: load_error_msg
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # MOVE TO SOURCE
+  # ============================================================
+
+  - module: ros_bt_py.ros_nodes.subtree
+    node_class: Subtree
+    version: 0.2.0
+    max_children: 0
+    name: MoveToSource
+    child_names: []
+    options:
+      - key: subtree_path
+        serialized_value: '"package://ros_bt_py_pyrobosim/trees/move_to_pose.yaml"'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: use_io_nodes
+        serialized_value: 'true'
+        serialized_type: '{"py/type": "builtins.bool"}'
+    inputs:
+      - key: MoveToCharger.TargetPose.in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: load_success
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.bool"}'
+      - key: load_error_msg
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # PICK UP WASTE
+  # ============================================================
+
+  - module: ros_bt_py.ros_nodes.subtree
+    node_class: Subtree
+    version: 0.2.0
+    max_children: 0
+    name: PickupWaste
+    child_names: []
+    options:
+      - key: subtree_path
+        serialized_value: '"package://ros_bt_py_pyrobosim/trees/pick_up.yaml"'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: use_io_nodes
+        serialized_value: 'true'
+        serialized_type: '{"py/type": "builtins.bool"}'
+    inputs:
+      - key: ObjectToPickUp.in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: load_success
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.bool"}'
+      - key: load_error_msg
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # MOVE TO DUMPSTER AFTER PICKUP
+  # ============================================================
+
+  - module: ros_bt_py.ros_nodes.subtree
+    node_class: Subtree
+    version: 0.2.0
+    max_children: 0
+    name: MoveToDumpster
+    child_names: []
+    options:
+      - key: subtree_path
+        serialized_value: '"package://ros_bt_py_pyrobosim/trees/move_to_pose.yaml"'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: use_io_nodes
+        serialized_value: 'true'
+        serialized_type: '{"py/type": "builtins.bool"}'
+    inputs:
+      - key: MoveToCharger.TargetPose.in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: load_success
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.bool"}'
+      - key: load_error_msg
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # PUT DOWN WASTE
+  # ============================================================
+
+  - module: ros_bt_py.ros_nodes.subtree
+    node_class: Subtree
+    version: 0.2.0
+    max_children: 0
+    name: PutDownWaste
+    child_names: []
+    options:
+      - key: subtree_path
+        serialized_value: '"package://ros_bt_py_pyrobosim/trees/put_down.yaml"'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: use_io_nodes
+        serialized_value: 'true'
+        serialized_type: '{"py/type": "builtins.bool"}'
+    inputs:
+      - key: ObjectToPickup.in
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    outputs:
+      - key: load_success
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.bool"}'
+      - key: load_error_msg
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+  # ============================================================
+  # CLOSE DUMPSTER
+  # ============================================================
+
+  - module: ros_bt_py.ros_nodes.subtree
+    node_class: Subtree
+    version: 0.2.0
+    max_children: 0
+    name: CloseDumpster
+    child_names: []
+    options:
+      - key: subtree_path
+        serialized_value: '"package://ros_bt_py_pyrobosim/trees/close_door.yaml"'
+        serialized_type: '{"py/type": "builtins.str"}'
+      - key: use_io_nodes
+        serialized_value: 'true'
+        serialized_type: '{"py/type": "builtins.bool"}'
+    inputs: []
+    outputs:
+      - key: load_success
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.bool"}'
+      - key: load_error_msg
+        serialized_value: 'null'
+        serialized_type: '{"py/type": "builtins.str"}'
+    state: SHUTDOWN
+
+
+# ================================================================
+# DATA WIRINGS
+# ================================================================
+
+data_wirings:
+
+  # Dumpster is the destination used by the reachability check.
+  - source:
+      node_name: DumpsterName
+      data_kind: outputs
+      data_key: out
+    target:
+      node_name: check_if_reachable
+      data_kind: inputs
+      data_key: TargetLocation.in
+
+  # The hallway/door to open if the route is blocked.
+  - source:
+      node_name: TrashHallway
+      data_kind: outputs
+      data_key: constant
+    target:
+      node_name: check_if_reachable
+      data_kind: inputs
+      data_key: Hallway.in
+
+  # Move to dumpster while the robot is empty-handed.
+  - source:
+      node_name: DumpsterName
+      data_kind: outputs
+      data_key: out
+    target:
+      node_name: MoveToDumpsterBeforePickup
+      data_kind: inputs
+      data_key: MoveToCharger.TargetPose.in
+
+  # Move to source.
+  - source:
+      node_name: SourceLocation
+      data_kind: outputs
+      data_key: out
+    target:
+      node_name: MoveToSource
+      data_kind: inputs
+      data_key: MoveToCharger.TargetPose.in
+
+  # Pick the requested waste.
+  - source:
+      node_name: WasteName
+      data_kind: outputs
+      data_key: out
+    target:
+      node_name: PickupWaste
+      data_kind: inputs
+      data_key: ObjectToPickUp.in
+
+  # Return to the already-open dumpster with the waste.
+  - source:
+      node_name: DumpsterName
+      data_kind: outputs
+      data_key: out
+    target:
+      node_name: MoveToDumpster
+      data_kind: inputs
+      data_key: MoveToCharger.TargetPose.in
+
+  # Place the requested waste.
+  - source:
+      node_name: WasteName
+      data_kind: outputs
+      data_key: out
+    target:
+      node_name: PutDownWaste
+      data_kind: inputs
+      data_key: ObjectToPickup.in
+
+
+tick_frequency_hz: 10
+
+state: EDITABLE
+
+public_node_data:
+
+  - node_name: SourceLocation
+    data_kind: inputs
+    data_key: in
+
+  - node_name: WasteName
+    data_kind: inputs
+    data_key: in
+
+  - node_name: DumpsterName
+    data_kind: inputs
+    data_key: in

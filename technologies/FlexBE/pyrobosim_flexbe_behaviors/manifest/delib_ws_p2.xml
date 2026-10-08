@@ -1,28 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<behavior name="delib_ws_p2">
+<behavior name="TransportItems">
 
-    <executable package_path="pyrobosim_flexbe_behaviors.delib_ws_p2_sm" class="delib_ws_p2SM" />
+    <executable package_path="pyrobosim_flexbe_behaviors.delib_ws_p2_sm" class="TransportItemsSM" />
     <tagstring>pyrobosim, roscon24</tagstring>
-    <author>David Conner</author>
+    <author>Mohamed Albakkour</author>
     <date>Sat Aug 31 2024</date>
     <description>
-        Behavior demonstrating p2 - travel, open door, go to table, pick object,
-        transport, and place
+        Generic behavior for transporting two configurable items from their source
+        location to a destination.
     </description>
 
 
     <!-- Contained Behaviors -->
-    <contains name="DetectSelect" />
+    <contains name="NavigateAndAct" />
+    <contains name="VerifyAccess" />
+    <contains name="VerifyWaste" />
+    <contains name="ProcessWaste" />
 
     <!-- Available Parameters -->
     <params>
 
-        <param type="text" name="door_location" default="hall_dining_trash" label="door_location" hint="Sets the door location" />
+        <param type="text" name="tasks" default="[waste0,waste1]" label="tasks" hint="Sets the tasks" />
 
-        <param type="text" name="get_location" default="desk" label="get_location" hint="Sets the location to get object from" />
+        <param type="text" name="access_location" default="" label="access_location" hint="Sets the access_location" />
 
-        <param type="text" name="put_location" default="dumpster" label="put_location" hint="Sets the location to put the object" />
+        <param type="text" name="destination_location" default="" label="destination_location" hint="Sets the destination_location" />
+
+        <param type="text" name="item0" default="" label="item0" hint="Sets the item0" />
+
+        <param type="text" name="source0" default="" label="source0" hint="Sets the source0" />
+
+        <param type="text" name="item1" default="" label="item1" hint="Sets the item1" />
+
+        <param type="text" name="source1" default="" label="source1" hint="Sets the source1" />
+
+        <param type="boolean" name="use_access" default="False" label="use_access" hint="Sets the use_access" />
+
+        <param type="boolean" name="close_destination" default="False" label="close_destination" hint="Sets the close_destination" />
 
     </params>
 
