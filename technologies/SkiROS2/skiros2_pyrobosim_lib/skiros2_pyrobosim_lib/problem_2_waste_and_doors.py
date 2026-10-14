@@ -1,30 +1,66 @@
 from enum import Enum, auto
+
 import skiros2_common.tools.logger as log
-from skiros2_skill.core.skill import SkillDescription, SkillBase, SerialStar, Selector, Serial
-from skiros2_common.core.primitive import PrimitiveBase
 from skiros2_common.core.params import ParamTypes
+from skiros2_common.core.primitive import PrimitiveBase
 from skiros2_common.core.world_element import Element
+from skiros2_skill.core.skill import (
+    Selector,
+    Serial,
+    SerialStar,
+    SkillBase,
+    SkillDescription,
+)
 
 #################################################################################
 # Descriptions
 #################################################################################
 
+
 class Problem2(SkillDescription):
     def createDescription(self):
-        #=======Params=========
+        # =======Params=========
         self.addParam("Dumpster", Element("skiros:Dumpster"), ParamTypes.Required)
         self.addParam("Waste1", Element("skiros:Waste"), ParamTypes.Required)
         self.addParam("Waste2", Element("skiros:Waste"), ParamTypes.Required)
         self.addParam("Gripper", Element("rparts:GripperEffector"), ParamTypes.Inferred)
-        #=======PreConditions=========
-        self.addPreCondition(self.getRelationCond("RobotHasAGripper", "skiros:hasA", "Robot", "Gripper", True))
-        self.addPreCondition(self.getPropCond("EmptyHanded", "skiros:ContainerState", "Gripper", "=", "Empty", True))
-        #=======PostConditions=========
-        self.addPostCondition(self.getPropCond("EmptyHanded", "skiros:ContainerState", "Gripper", "=", "Empty", True))
-        self.addPostCondition(self.getRelationCond("RobotAtDumpster", "skiros:at", "Robot", "Dumpster", True))
-        self.addPostCondition(self.getRelationCond("Waste1Contained", "skiros:contain", "Dumpster", "Waste1", True))
-        self.addPostCondition(self.getRelationCond("Waste2Contained", "skiros:contain", "Dumpster", "Waste2", True))
-        self.addPostCondition(self.getPropCond("DumpsterIsNotOpen", "skiros:Open", "Dumpster", "=", True, False))
+        # =======PreConditions=========
+        self.addPreCondition(
+            self.getRelationCond(
+                "RobotHasAGripper", "skiros:hasA", "Robot", "Gripper", True
+            )
+        )
+        self.addPreCondition(
+            self.getPropCond(
+                "EmptyHanded", "skiros:ContainerState", "Gripper", "=", "Empty", True
+            )
+        )
+        # =======PostConditions=========
+        self.addPostCondition(
+            self.getPropCond(
+                "EmptyHanded", "skiros:ContainerState", "Gripper", "=", "Empty", True
+            )
+        )
+        self.addPostCondition(
+            self.getRelationCond(
+                "RobotAtDumpster", "skiros:at", "Robot", "Dumpster", True
+            )
+        )
+        self.addPostCondition(
+            self.getRelationCond(
+                "Waste1Contained", "skiros:contain", "Dumpster", "Waste1", True
+            )
+        )
+        self.addPostCondition(
+            self.getRelationCond(
+                "Waste2Contained", "skiros:contain", "Dumpster", "Waste2", True
+            )
+        )
+        self.addPostCondition(
+            self.getPropCond(
+                "DumpsterIsNotOpen", "skiros:Open", "Dumpster", "=", True, False
+            )
+        )
 
 
 class NavigateAndOpenDoor(SkillDescription):
@@ -34,13 +70,35 @@ class NavigateAndOpenDoor(SkillDescription):
         self.addParam("StartLocation", Element("skiros:Location"), ParamTypes.Inferred)
         self.addParam("Gripper", Element("rparts:GripperEffector"), ParamTypes.Inferred)
         # =======PreConditions=========
-        self.addPreCondition(self.getRelationCond("RobotHasAGripper", "skiros:hasA", "Robot", "Gripper", True))
-        self.addPreCondition(self.getPropCond("EmptyHanded", "skiros:ContainerState", "Gripper", "=", "Empty", True))
-        self.addPreCondition(self.getRelationCond("RobotAt", "skiros:at", "Robot", "StartLocation", True))
+        self.addPreCondition(
+            self.getRelationCond(
+                "RobotHasAGripper", "skiros:hasA", "Robot", "Gripper", True
+            )
+        )
+        self.addPreCondition(
+            self.getPropCond(
+                "EmptyHanded", "skiros:ContainerState", "Gripper", "=", "Empty", True
+            )
+        )
+        self.addPreCondition(
+            self.getRelationCond("RobotAt", "skiros:at", "Robot", "StartLocation", True)
+        )
         # =======PostConditions=========
-        self.addPostCondition(self.getRelationCond("RobotAt", "skiros:at", "Robot", "TargetLocation", True))
-        self.addPostCondition(self.getRelationCond("RobotNotAt", "skiros:at", "Robot", "StartLocation", False))
-        self.addPostCondition(self.getPropCond("IsReachable", "skiros:Reachable", "TargetLocation", "=", True, True))
+        self.addPostCondition(
+            self.getRelationCond(
+                "RobotAt", "skiros:at", "Robot", "TargetLocation", True
+            )
+        )
+        self.addPostCondition(
+            self.getRelationCond(
+                "RobotNotAt", "skiros:at", "Robot", "StartLocation", False
+            )
+        )
+        self.addPostCondition(
+            self.getPropCond(
+                "IsReachable", "skiros:Reachable", "TargetLocation", "=", True, True
+            )
+        )
 
 
 class LocationIsDoor(SkillDescription):
@@ -56,7 +114,9 @@ class SelectDoorsToTarget(SkillDescription):
         # =======Params=========
         self.addParam("Location", Element("skiros:Location"), ParamTypes.Required)
         self.addParam("TargetLocation", Element("skiros:Location"), ParamTypes.Required)
-        self.addParam("IntermediateLocation", Element("skiros:Location"), ParamTypes.Optional)
+        self.addParam(
+            "IntermediateLocation", Element("skiros:Location"), ParamTypes.Optional
+        )
 
 
 #################################################################################
@@ -65,8 +125,8 @@ class SelectDoorsToTarget(SkillDescription):
 
 
 class problem_2(SkillBase):
-    """
-    """
+    """ """
+
     def createDescription(self):
         self.setAvailableForPlanning(False)
         self.setDescription(Problem2(), "Problem 2 - Waste Disposal")
@@ -78,74 +138,133 @@ class problem_2(SkillBase):
             # As a side-effect, this also opens all the doors leading to the dumpster.
             self.skill(SerialStar())(
                 # Navigate to the dumpster with the new skill that opens doors on the way
-                self.skill("NavigateAndOpenDoor", "navigate_and_open_doors", remap={"TargetLocation": "Dumpster"}),
+                self.skill(
+                    "NavigateAndOpenDoor",
+                    "navigate_and_open_doors",
+                    remap={"TargetLocation": "Dumpster"},
+                ),
                 self.skill("BbUnsetParam", "", remap={"Parameter": "StartLocation"}),
                 # FIXME 2.1: Add a skill to open the dumpster:
-
+                self.skill("OpenLocation", "", remap={"Location": "Dumpster"}),
             ),
             # As a next step we need to pick up the first waste item and dispose of it
             self.skill(SerialStar())(
                 # FIXME 2.2: Add a skill to pick up the first waste object and that brings it to the dumpster. Try to reuse a previously implemented skill
-
                 # We need to clean up some parameters on the blackboard. Nothing to do here.
+                self.skill(
+                    "Problem1",
+                    "",
+                    remap={"Object": "Waste1", "ObjectTargetLocation": "Dumpster"},
+                ),
                 self.skill("BbUnsetParam", "", remap={"Parameter": "StartLocation"}),
-                self.skill("BbUnsetParam", "", remap={"Parameter": "ObjectStartLocation"}),
+                self.skill(
+                    "BbUnsetParam", "", remap={"Parameter": "ObjectStartLocation"}
+                ),
                 self.skill("BbUnsetParam", "", remap={"Parameter": "Container"}),
             ),
             # Now we want to pick up the second waste item and dispose of it
             self.skill(SerialStar())(
                 # FIXME 2.3: Add a skill to pick up the second waste object and that brings it to the dumpster. Try to reuse a previously implemented skill
+                self.skill(
+                    "Problem1",
+                    "",
+                    remap={"Object": "Waste2", "ObjectTargetLocation": "Dumpster"},
+                ),
             ),
             # FIXME 2.4: Add a skill to close the dumpster after disposing of the waste
-
-
+            self.skill("CloseLocation", "", remap={"Location": "Dumpster"}),
             self.skill("BbUnsetParam", "", remap={"Parameter": "ObjectStartLocation"}),
         )
+
 
 class navigate_and_open_door(SkillBase):
     def createDescription(self):
         self.setAvailableForPlanning(False)
         self.setDescription(NavigateAndOpenDoor(), "Navigate and Open Single Door")
-    
+
     def expand(self, skill):
         skill.setProcessor(SerialStar())
         skill(
             self.skill("Navigate", ""),
             self.skill(Selector())(
-                self.skill("LocationIsDoor", "", remap={"Location": "TargetLocation"}, specify={"ReverseResult": True, "Open": False}),
-                self.skill("OpenOpenableLocation", "", remap={"OpenableLocation": "TargetLocation"}),
+                self.skill(
+                    "LocationIsDoor",
+                    "",
+                    remap={"Location": "TargetLocation"},
+                    specify={"ReverseResult": True, "Open": False},
+                ),
+                self.skill(
+                    "OpenOpenableLocation",
+                    "",
+                    remap={"OpenableLocation": "TargetLocation"},
+                ),
             ),
         )
+
 
 class navigate_and_open_doors(SkillBase):
     def createDescription(self):
         self.setDescription(NavigateAndOpenDoor(), "Navigate and Open Doors")
 
     def modifyDescription(self, skill):
-        skill.addParam("IntermediateLocation", Element("skiros:Location"), ParamTypes.Optional)
-        skill.addParam("FirstStartLocation", Element("skiros:Location"), ParamTypes.Optional)
+        skill.addParam(
+            "IntermediateLocation", Element("skiros:Location"), ParamTypes.Optional
+        )
+        skill.addParam(
+            "FirstStartLocation", Element("skiros:Location"), ParamTypes.Optional
+        )
 
     def expand(self, skill):
         skill.setProcessor(SerialStar())
         skill(
             self.skill("BbUnsetParam", "", remap={"Parameter": "IntermediateLocation"}),
-            self.skill("CopyValue", "", remap={"Input": "StartLocation", "Output": "FirstStartLocation", }),
+            self.skill(
+                "CopyValue",
+                "",
+                remap={
+                    "Input": "StartLocation",
+                    "Output": "FirstStartLocation",
+                },
+            ),
             self.skill(Serial())(
                 self.skill(Selector())(
                     self.skill("IsNone", "", remap={"Param": "IntermediateLocation"}),
                     self.skill(SerialStar())(
-                        self.skill("WmSetProperties", "",
+                        self.skill(
+                            "WmSetProperties",
+                            "",
                             remap={"Src": "IntermediateLocation"},
-                            specify={"Properties": {"skiros:Reachable": True}}),
-                        self.skill("NavigateAndOpenDoor", "navigate_and_open_door", remap={"TargetLocation": "IntermediateLocation"}),
-                        self.skill("WmSetProperties", "",
+                            specify={"Properties": {"skiros:Reachable": True}},
+                        ),
+                        self.skill(
+                            "NavigateAndOpenDoor",
+                            "navigate_and_open_door",
+                            remap={"TargetLocation": "IntermediateLocation"},
+                        ),
+                        self.skill(
+                            "WmSetProperties",
+                            "",
                             remap={"Src": "IntermediateLocation"},
-                            specify={"Properties": {"skiros:Reachable": True}}),
-                        self.skill("CopyValue", "", remap={"Output": "StartLocation", "Input": "IntermediateLocation"}),
+                            specify={"Properties": {"skiros:Reachable": True}},
+                        ),
+                        self.skill(
+                            "CopyValue",
+                            "",
+                            remap={
+                                "Output": "StartLocation",
+                                "Input": "IntermediateLocation",
+                            },
+                        ),
                     ),
                 ),
-                self.skill("SelectDoorsToTarget", "", remap={"Location": "StartLocation"}),
-                self.skill("CopyValue", "", remap={"Input": "FirstStartLocation", "Output": "StartLocation"}),
+                self.skill(
+                    "SelectDoorsToTarget", "", remap={"Location": "StartLocation"}
+                ),
+                self.skill(
+                    "CopyValue",
+                    "",
+                    remap={"Input": "FirstStartLocation", "Output": "StartLocation"},
+                ),
                 self.skill("BbUnsetParam", "", remap={"Parameter": "StartLocation"}),
             ),
         )
@@ -155,7 +274,6 @@ class location_is_door(PrimitiveBase):
     def createDescription(self):
         self.setAvailableForPlanning(False)
         self.setDescription(LocationIsDoor(), "Location is Door")
-
 
     def execute(self):
         location = self.params["Location"].value
@@ -182,7 +300,9 @@ class select_doors_to_target(PrimitiveBase):
 
     def createDescription(self):
         self.setAvailableForPlanning(False)
-        self.setDescription(SelectDoorsToTarget(), "Select Closest Door Leading to Target")
+        self.setDescription(
+            SelectDoorsToTarget(), "Select Closest Door Leading to Target"
+        )
 
     def onPreempt(self):
         return self.success("Stopped")
@@ -227,7 +347,7 @@ class select_doors_to_target(PrimitiveBase):
             path.append(elm)
             _, elm = visited_from[elm.id]
 
-        log.warn('FOUND PATH: ' + str(list(reversed(path))))
+        log.warn("FOUND PATH: " + str(list(reversed(path))))
         return list(reversed(path))
 
     def connections_from(self, elm_type, elm):
@@ -241,65 +361,86 @@ class select_doors_to_target(PrimitiveBase):
             raise NotImplementedError(elm_type)
 
     def connections_from_door(self, elm):
-        for door_relation in elm.getRelations(subj='-1', pred='skiros:adjacentLocation'):
-            room = self.wmi.get_element(door_relation['dst'])
+        for door_relation in elm.getRelations(
+            subj="-1", pred="skiros:adjacentLocation"
+        ):
+            room = self.wmi.get_element(door_relation["dst"])
             room_type = self.location_type(room)
             if room_type is None:
                 continue
             yield 100, room_type, room
 
-            for room_relation in room.getRelations(subj='-1', pred='skiros:contain'):
-                sublocation = self.wmi.get_element(room_relation['dst'])
+            for room_relation in room.getRelations(subj="-1", pred="skiros:contain"):
+                sublocation = self.wmi.get_element(room_relation["dst"])
                 sublocation_type = self.location_type(sublocation)
                 if sublocation_type is None:
                     continue
                 yield 100, sublocation_type, sublocation
 
-            for room_relation in room.getRelations(obj='-1', pred='skiros:adjacentLocation'):
-                door = self.wmi.get_element(room_relation['src'])
+            for room_relation in room.getRelations(
+                obj="-1", pred="skiros:adjacentLocation"
+            ):
+                door = self.wmi.get_element(room_relation["src"])
                 door_type = self.location_type(door)
                 if door_type is None:
                     continue
-                yield 1 + 10 * int(not door.getProperty("skiros:Open").value), door_type, door
+                yield (
+                    1 + 10 * int(not door.getProperty("skiros:Open").value),
+                    door_type,
+                    door,
+                )
 
     def connections_from_room(self, elm):
-        for room_relation in elm.getRelations(obj='-1', pred='skiros:adjacentLocation'):
-            door = self.wmi.get_element(room_relation['src'])
+        for room_relation in elm.getRelations(obj="-1", pred="skiros:adjacentLocation"):
+            door = self.wmi.get_element(room_relation["src"])
             door_type = self.location_type(door)
             if door_type is None:
                 continue
-            yield 1 + 10 * int(not door.getProperty("skiros:Open").value), door_type, door
+            yield (
+                1 + 10 * int(not door.getProperty("skiros:Open").value),
+                door_type,
+                door,
+            )
 
-        for room_relation in elm.getRelations(subj='-1', pred='skiros:contain'):
-            sublocation = self.wmi.get_element(room_relation['dst'])
+        for room_relation in elm.getRelations(subj="-1", pred="skiros:contain"):
+            sublocation = self.wmi.get_element(room_relation["dst"])
             sublocation_type = self.location_type(sublocation)
             if sublocation_type is None:
                 continue
             yield 100, sublocation_type, sublocation
 
     def connections_from_sublocation(self, elm):
-        for sublocation_relation in elm.getRelations(obj='-1', pred='skiros:contain'):
-            room = self.wmi.get_element(sublocation_relation['src'])
+        for sublocation_relation in elm.getRelations(obj="-1", pred="skiros:contain"):
+            room = self.wmi.get_element(sublocation_relation["src"])
             room_type = self.location_type(room)
             if room_type is None:
                 continue
             yield 100, room_type, room
 
-            for room_relation in room.getRelations(obj='-1', pred='skiros:adjacentLocation'):
-                door = self.wmi.get_element(room_relation['src'])
+            for room_relation in room.getRelations(
+                obj="-1", pred="skiros:adjacentLocation"
+            ):
+                door = self.wmi.get_element(room_relation["src"])
                 door_type = self.location_type(door)
                 if door_type is None:
                     continue
-                yield 1 + 10 * int(not door.getProperty("skiros:Open").value), door_type, door
+                yield (
+                    1 + 10 * int(not door.getProperty("skiros:Open").value),
+                    door_type,
+                    door,
+                )
 
     def location_type(self, location):
         cls = location.type
 
-        if cls == 'skiros:Door':
+        if cls == "skiros:Door":
             return self.Edge.door
-        elif cls == 'skiros:Room':
+        elif cls == "skiros:Room":
             return self.Edge.room
-        elif cls == 'skiros:Location' or self.wmi.get_super_class(cls) in ['skiros:Location', 'skiros:OpenableLocation']:
+        elif cls == "skiros:Location" or self.wmi.get_super_class(cls) in [
+            "skiros:Location",
+            "skiros:OpenableLocation",
+        ]:
             return self.Edge.sublocation
 
         return None
@@ -313,14 +454,20 @@ class select_doors_to_target(PrimitiveBase):
         return True
 
     def execute(self):
-        if self.current_location and self.current_location.id != self.params["Location"].value.id:
+        if (
+            self.current_location
+            and self.current_location.id != self.params["Location"].value.id
+        ):
             return self.step(f"Current location is not {self.current_location.label}")
 
         if not self.path:
             return self.success("Path has been completed")
 
         self.current_location, self.path = self.path[0], self.path[1:]
-        if self.location_type(self.current_location) is self.Edge.door and not self.current_location.getProperty("skiros:Open").value:
+        if (
+            self.location_type(self.current_location) is self.Edge.door
+            and not self.current_location.getProperty("skiros:Open").value
+        ):
             self.params["IntermediateLocation"].value = self.current_location
             return self.step("Door needs to be opened")
         elif not self.path:
@@ -329,7 +476,10 @@ class select_doors_to_target(PrimitiveBase):
         self.current_location = None
         while not self.current_location:
             self.current_location, self.path = self.path[0], self.path[1:]
-            if self.location_type(self.current_location) is self.Edge.door and self.current_location.getProperty("skiros:Open").value:
+            if (
+                self.location_type(self.current_location) is self.Edge.door
+                and self.current_location.getProperty("skiros:Open").value
+            ):
                 self.current_location = None
 
         self.params["IntermediateLocation"].value = self.current_location
