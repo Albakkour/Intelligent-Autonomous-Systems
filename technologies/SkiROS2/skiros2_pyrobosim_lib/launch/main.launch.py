@@ -58,9 +58,20 @@ def skills_and_skiros2(context, *args, **kwargs):
             "close_openablelocation_with_retry",
         ]
         if problem_number == 4:
-            # Problem 4 replaces the regular Navigate implementation with the
-            # battery-aware version used by the reused Problem 1-3 skills.
+            # Problem 4 checks the battery before every physical task action.
             basic_compound_skills.remove("navigate_with_retry")
+            basic_compound_skills.remove("pick_with_retry")
+            basic_compound_skills.remove("place_with_retry")
+            basic_compound_skills.remove("open_openablelocation_with_retry")
+            basic_compound_skills.remove("close_openablelocation_with_retry")
+            basic_compound_skills.extend(
+                [
+                    "pick_with_retry_and_battery_check",
+                    "place_with_retry_and_battery_check",
+                    "open_openablelocation_with_retry_and_battery_check",
+                    "close_openablelocation_with_retry_and_battery_check",
+                ]
+            )
         basic_compound_solution_skills = [
             "pick_with_retry_solution",
             "place_with_retry_solution",

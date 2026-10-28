@@ -153,7 +153,7 @@ class problem_2(SkillBase):
                 # We need to clean up some parameters on the blackboard. Nothing to do here.
                 self.skill(
                     "Problem1",
-                    "",
+                    "problem_1",
                     remap={"Object": "Waste1", "ObjectTargetLocation": "Dumpster"},
                 ),
                 self.skill("BbUnsetParam", "", remap={"Parameter": "StartLocation"}),
@@ -167,7 +167,7 @@ class problem_2(SkillBase):
                 # FIXME 2.3: Add a skill to pick up the second waste object and that brings it to the dumpster. Try to reuse a previously implemented skill
                 self.skill(
                     "Problem1",
-                    "",
+                    "problem_1",
                     remap={"Object": "Waste2", "ObjectTargetLocation": "Dumpster"},
                 ),
             ),

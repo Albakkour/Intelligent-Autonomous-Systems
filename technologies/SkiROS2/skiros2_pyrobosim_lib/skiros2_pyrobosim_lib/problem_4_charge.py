@@ -9,7 +9,13 @@ from skiros2_skill.core.skill import (
 )
 from skiros2_common.core.params import ParamTypes
 from skiros2_common.core.world_element import Element
-from .pyrobosim_compound_skills import Navigate
+from .pyrobosim_compound_skills import (
+    CloseOpenableLocation,
+    Navigate,
+    OpenOpenableLocation,
+    Pick,
+    Place,
+)
 
 #################################################################################
 # Descriptions
@@ -145,11 +151,14 @@ class navigate_with_retry_and_battery_check(SkillBase):
         self.setDescription(Navigate(), "Navigate to Location")
 
     def expand(self, skill):
-        # Previously we were executing everything with a SerialStar processor. If we would use that for the battery check, we would only check it once at the beginning of the skill. However, we want to check the battery level constantly, so we set it to a Serial processor:
+        # Previously we were executing everything with a SerialStar processor. If we would use that for the battery check,
+        # we would only check it once at the beginning of the skill. However, we want to check the battery level constantly,
+        # so we set it to a Serial processor:
         skill.setProcessor(Serial())
+
         skill(
-            # FIXME 4.1: Add the battery check and charge skill here:
-            # Now we can plug in our previous navigation skill:
+            # Serial re-ticks this guard while navigation is running.
+            self.skill("BatteryCheckAndCharge", ""),
             self.skill(SerialStar())(
                 self.skill(RetryOnFail(10))(
                     self.skill("NavigateExecution", ""),
@@ -157,14 +166,94 @@ class navigate_with_retry_and_battery_check(SkillBase):
                 self.skill(
                     "WmSetRelation",
                     "wm_set_relation",
-                    remap={"Dst": "TargetLocation", "OldDstToRemove": "StartLocation"},
+                    remap={
+                        "Dst": "TargetLocation",
+                        "OldDstToRemove": "StartLocation",
+                    },
                     specify={
                         "Src": self.params["Robot"].value,
                         "Relation": "skiros:at",
                         "RelationState": True,
                     },
                 ),
-            )
+            ),
+        )
+
+
+class pick_with_retry_and_battery_check(SkillBase):
+    def createDescription(self):
+        self.setDescription(Pick(), "Pick Part with Retry and Battery Check")
+
+    def expand(self, skill):
+        skill.setProcessor(SerialStar())
+        skill(
+            self.skill("BatteryCheckAndCharge", ""),
+            self.skill(RetryOnFail(10))(self.skill("PickExecution", "")),
+            self.skill(
+                "WmMoveObject",
+                "wm_move_object",
+                remap={"StartLocation": "Container", "TargetLocation": "Gripper"},
+            ),
+        )
+
+
+class place_with_retry_and_battery_check(SkillBase):
+    def createDescription(self):
+        self.setDescription(Place(), "Place Part with Retry and Battery Check")
+
+    def expand(self, skill):
+        skill.setProcessor(SerialStar())
+        skill(
+            self.skill("BatteryCheckAndCharge", ""),
+            self.skill(RetryOnFail(10))(self.skill("PlaceExecution", "")),
+            self.skill(
+                "WmMoveObject",
+                "wm_move_object",
+                remap={
+                    "StartLocation": "Gripper",
+                    "TargetLocation": "PlacingLocation",
+                },
+            ),
+        )
+
+
+class open_openablelocation_with_retry_and_battery_check(SkillBase):
+    def createDescription(self):
+        self.setDescription(
+            OpenOpenableLocation(), "Open Location with Retry and Battery Check"
+        )
+
+    def expand(self, skill):
+        skill.setProcessor(SerialStar())
+        skill(
+            self.skill("BatteryCheckAndCharge", ""),
+            self.skill(RetryOnFail(10))(self.skill("OpenExecution", "")),
+            self.skill(
+                "WmSetProperties",
+                "",
+                remap={"Src": "OpenableLocation"},
+                specify={"Properties": {"skiros:Open": True}},
+            ),
+        )
+
+
+class close_openablelocation_with_retry_and_battery_check(SkillBase):
+    def createDescription(self):
+        self.setDescription(
+            CloseOpenableLocation(), "Close Location with Retry and Battery Check"
+        )
+
+    def expand(self, skill):
+        skill.setProcessor(SerialStar())
+        skill(
+            self.skill("BatteryCheckAndCharge", ""),
+            self.skill(RetryOnFail(10))(self.skill("CloseExecution", "")),
+            self.skill(
+                "WmSetProperties",
+                "",
+                remap={"Src": "OpenableLocation"},
+                specify={"Properties": {"skiros:Open": False}},
+            ),
         )
 
 
@@ -182,13 +271,17 @@ class problem_4(SkillBase):
         skill(
             # FIXME 4.2: Charge the robot before starting the task and make sure that the path to the charger is not blocked by doors.
             # You can look at the new skills that were introduced in this file and think about which one should be included here.
+            self.skill("Charge", "charge_and_open_doors"),
             self.skill("BbUnsetParam", "", remap={"Parameter": "StartLocation"}),
             # FIXME 4.3: Before using butter it's often a good idea to have it warm up a bit, so we will set the table first. Try to reuse what you did in Problem3 to set the table:
             # After setting the table, we need to remove some parameters from the blackboard. Nothing to do here:
+            self.skill("Problem3", ""),
             self.skill("BbUnsetParam", "", remap={"Parameter": "StartLocation"}),
             self.skill("BbUnsetParam", "", remap={"Parameter": "ObjectStartLocation"}),
             self.skill("BbUnsetParam", "", remap={"Parameter": "Container"}),
             # FIXME 4.4: Now we can fetch the waste and dispose of it. Try to re-use a skill from the previous problems to do this:
+            self.skill("Problem2", ""),
+            self.skill("BatteryCheckAndCharge", ""),
         )
 
 

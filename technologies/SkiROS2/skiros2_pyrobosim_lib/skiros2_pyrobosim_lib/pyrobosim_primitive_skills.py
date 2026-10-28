@@ -168,15 +168,16 @@ class get_battery_percentage(PrimitiveBase):
         self.setDescription(GetBatteryPercentage(), "Get Battery Percentage")
 
     def onStart(self):
-        # initial ros 2 topic subscriber
+        self.battery_level = None
+
+        self.robot = self._wmi.get_element(self.params["Robot"].value.id)
+
         robot_name = self.params["Robot"].value.label.split(":")[-1]
-        topic = "/{}/robot_state".format(robot_name)
+        topic = f"/{robot_name}/robot_state"
+
         self.subscription = self.node.create_subscription(
             RobotState, topic, self.callback, 1
         )
-        self.battery_level = None
-        # Obtain world model robot element
-        # self.robot = self._wmi.get_element(self.params["Robot"].value.id)
         return True
 
     def callback(self, msg):
@@ -185,10 +186,14 @@ class get_battery_percentage(PrimitiveBase):
     def execute(self):
         if self.battery_level is None:
             return self.step("Waiting for battery level")
+
+        # Save the latest battery level in the world model
+        self.robot.setProperty("skiros:BatteryPercentage", self.battery_level)
+        self._wmi.update_element_properties(self.robot)
+
         self.params["BatteryLevel"].value = self.battery_level
-        # self.robot.setProperty("skiros:BatteryPercentage", self.battery_level)
-        # self._wmi.update_element_properties(self.robot)
-        return self.success("Battery level is {}".format(self.battery_level))
+
+        return self.success(f"Battery level is {self.battery_level}")
 
 
 class battery_above_level(PrimitiveBase):

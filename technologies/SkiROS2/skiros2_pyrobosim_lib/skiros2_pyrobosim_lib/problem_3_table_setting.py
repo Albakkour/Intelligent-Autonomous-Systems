@@ -195,7 +195,7 @@ class problem_3(SkillBase):
             self.skill(SerialStar())(
                 self.skill(
                     "Problem1",
-                    "",
+                    "problem_1",
                     remap={"ObjectTargetLocation": "Table", "Object": "Bread"},
                 ),
                 # Now close the pantry. The robot is at the Table after Problem1,
@@ -217,7 +217,7 @@ class problem_3(SkillBase):
             self.skill(SerialStar())(
                 self.skill(
                     "Problem1",
-                    "",
+                    "problem_1",
                     remap={"ObjectTargetLocation": "Table", "Object": "Butter"},
                 ),
                 self.skill(

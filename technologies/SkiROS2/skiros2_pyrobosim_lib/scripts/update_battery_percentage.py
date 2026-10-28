@@ -18,11 +18,11 @@ class BatteryLevelUpdate(Node):
         """Initialize the BatteryLevelUpdate class."""
         super().__init__("battery_level_update_" + robot_name)
         self.wmi = WorldModelInterface(self, "battery_level_update_" + robot_name)
-        self.battery_level = 0.0
-        self.last_battery_level = 0.0
+        self.battery_level = None
+        self.last_battery_level = None
 
         self.element_name = element_name
-        self.update_change = 1  # If any value differs more than this, update
+        self.update_change = 0.0
 
         topic = f"/{robot_name}/robot_state"
         self.sub = self.create_subscription(RobotState, topic, self._callback, 1)
@@ -31,14 +31,18 @@ class BatteryLevelUpdate(Node):
         return abs(f1 - f2) <= allowed_error
 
     def _update_element(self):
-        if not self._isclose(self.last_battery_level, self.battery_level, self.update_change):
+        if self.battery_level is None:
+            return
+        if self.last_battery_level is None or not self._isclose(
+            self.last_battery_level, self.battery_level, self.update_change
+        ):
             el = self.wmi.get_element(self.element_name)
             el.setProperty("skiros:BatteryPercentage", self.battery_level, datatype="xsd:double")
-            self.wmi.update_element(el)
+            self.wmi.update_element_properties(el)
             self.last_battery_level = self.battery_level
 
     def _callback(self, msg):
-        self.battery_level = round(msg.battery_level, 0)
+        self.battery_level = msg.battery_level
 
     def run(self):
         """Run the BatteryLevelUpdate class."""

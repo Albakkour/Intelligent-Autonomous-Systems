@@ -12,8 +12,15 @@ In this problem, we are doing a combination of the previous problems, but with t
 | 1. Bring bread and butter to the dining table.<br>2. Fridge and pantry should be closed at the end.<br>3. Waste should be in the dumpster.<br>4. Dumpster should be closed.<br>5. Don't run out of battery!<br> | - Bread is in the pantry, which is closed.<br>- Butter is in the fridge, which is closed.<br>- Waste is on the office desk and in the office bin.<br>- Hallways into the trash room are closed.<br> | - Problem1<br>- Problem2<br>- Problem3<br>- charge_and_open_doors<br>- battery_check_and_charge<br>- (navigate_with_retry) | - The robot has limited battery and needs to be charged.<br>- Actions might still fail  |
 
 So we have two challenges to tackle:  
-1. we need to surveil the battery level and charge the robot when needed
+1. we need to monitor the battery level and charge the robot when needed
 2. use the skills from the previous problems to solve the tasks
+
+After the initial charger-and-door setup, every task navigation, pick, place,
+open, and close action checks the battery first. If it is below 40%, the robot
+charges before starting that action. Navigation also repeats the check while
+moving. The check is at action boundaries for pick/place/open/close, so an
+action already in progress finishes before the robot charges and proceeds to
+the next action. There is also a final check before Problem 4 completes.
 
 First, you might want to try to run problem 2 and problem 3 to see how the actions impact the battery level.
 
@@ -38,7 +45,8 @@ class navigate_with_retry_and_battery_check(SkillBase):
         # Previously we were executing everything with a SerialStar processor. If we would use that for the battery check, we would only check it once at the beginning of the skill. However, we want to check the battery level constantly, so we set it to a Serial processor:
         skill.setProcessor(Serial())
         skill(
-            # FIXME 4.1: Add the battery check and charge skill here:
+            # Check and charge before and during navigation:
+            self.skill("BatteryCheckAndCharge", ""),
             
             # Now we can plug in our previous navigation skill:
             self.skill(SerialStar())(
